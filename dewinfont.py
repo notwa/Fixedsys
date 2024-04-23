@@ -27,6 +27,10 @@ import sys
 # Extract bitmap font data from a Windows .FON or .FNT file.
 
 
+def lament(*args, **kwargs):
+    print(*args, flush=True, file=sys.stderr, **kwargs)
+
+
 def frombyte(s):
     return s[0]
 
@@ -109,11 +113,11 @@ def dofnt(fnt):
     version = fromword(fnt[0:])
     ftype = fromword(fnt[0x42:])
     if ftype & 1:
-        sys.stderr.write("This font is a vector font\n")
+        lament("This font is a vector font\n")
         return None
     off_facename = fromdword(fnt[0x69:])
     if off_facename < 0 or off_facename > len(fnt):
-        sys.stderr.write("Face name not contained within font data")
+        lament("Face name not contained within font data")
         return None
     f.facename = asciz(fnt[off_facename:])
     # print "Face name", f.facename
@@ -186,13 +190,13 @@ def nefon(fon, neoff):
             start = fromword(fon[p:]) << shift
             size = fromword(fon[p + 2 :]) << shift
             if start < 0 or size < 0 or start + size > len(fon):
-                sys.stderr.write("Resource overruns file boundaries\n")
+                lament("Resource overruns file boundaries\n")
                 return None
             if rtype == 0x8008:  # this is an actual font
                 # print "Font at", start, "size", size
                 font = dofnt(fon[start : start + size])
                 if font is None:
-                    sys.stderr.write("Failed to read font resource at %x" % start)
+                    lament("Failed to read font resource at %x" % start)
                     return None
                 ret = ret + [font]
             p = p + 12  # start, size, flags, name/id, 4 bytes reserved
@@ -236,7 +240,7 @@ def pefon(fon, peoff):
         if secname == b".rsrc":
             break
     if secname != b".rsrc":
-        sys.stderr.write("Unable to locate resource section\n")
+        lament("Unable to locate resource section\n")
         return None
     # Now we've found the resource section, let's throw away the rest.
     rsrc = fon[secptr : secptr + secsize]
@@ -265,7 +269,7 @@ def pefon(fon, peoff):
         size = fromdword(rsrc[off + 4 :])
         font = dofnt(rsrc[start : start + size])
         if font is None:
-            sys.stderr.write("Failed to read font resource at %x" % start)
+            lament("Failed to read font resource at %x" % start)
             return None
         ret = ret + [font]
     return ret
@@ -275,7 +279,7 @@ def dofon(fon):
     "Split a .FON up into .FNTs and pass each to dofnt."
     # Check the MZ header.
     if fon[0:2] != b"MZ":
-        sys.stderr.write("MZ signature not found\n")
+        lament("MZ signature not found\n")
         return None
     # Find the NE header.
     neoff = fromdword(fon[0x3C:])
@@ -284,7 +288,7 @@ def dofon(fon):
     elif fon[neoff : neoff + 4] == b"PE\0\0":
         return pefon(fon, neoff)
     else:
-        sys.stderr.write("NE or PE signature not found\n")
+        lament("NE or PE signature not found\n")
         return None
 
 
@@ -314,21 +318,21 @@ while len(a) > 0:
                 outfile = a[1]
                 a = a[2:]
             except IndexError:
-                sys.stderr.write("option -o requires an argument\n")
+                lament("option -o requires an argument\n")
                 sys.exit(1)
         elif a[0] == "-p":
             try:
                 prefix = a[1]
                 a = a[2:]
             except IndexError:
-                sys.stderr.write("option -p requires an argument\n")
+                lament("option -p requires an argument\n")
                 sys.exit(1)
         else:
-            sys.stderr.write("ignoring unrecognised option " + a[0] + "\n")
+            lament("ignoring unrecognised option " + a[0] + "\n")
             a = a[1:]
     else:
         if infile is not None:
-            sys.stderr.write("one input file at once, please\n")
+            lament("one input file at once, please\n")
             sys.exit(1)
         infile = a[0]
         a = a[1:]
@@ -343,10 +347,10 @@ else:
     fonts = [dofnt(data)]
 
 if len(fonts) > 1 and prefix is None:
-    sys.stderr.write("more than one font in file; use -p prefix\n")
+    lament("more than one font in file; use -p prefix\n")
     sys.exit(1)
 if outfile is None and prefix is None:
-    sys.stderr.write("please specify -o outfile or -p prefix\n")
+    lament("please specify -o outfile or -p prefix\n")
     sys.exit(1)
 
 for i in range(len(fonts)):
