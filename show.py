@@ -70,6 +70,14 @@ def show(lines):
                 pass
             case ["pointsize", pointsize]:
                 pass
+            case ["italic", italic]:
+                pass
+            case ["underline", underline]:
+                pass
+            case ["strikeout", strikeout]:
+                pass
+            case ["weight", weight]:
+                pass
             case ["charset", charset]:
                 pass
             case ["char" | "push", i]:
