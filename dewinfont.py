@@ -79,8 +79,7 @@ def savefancy(f, i, printer, *, single=False, chars1=" █", chars2=" ▀▄█"
         assert rows in (1, 2), f"{rows=}"
         c = "." if rows == 1 else ":"
         s = c + "".join(charset[b] for b in buf).rstrip(" ")
-        if s != c:
-            printer(s)
+        printer(s)
 
     if w != 0:
         buf = [0] * w
@@ -95,8 +94,13 @@ def savefancy(f, i, printer, *, single=False, chars1=" █", chars2=" ▀▄█"
             start_y += 1
         if 0 < start_x < w or 0 < start_y < h:
             printer(f"at {start_x:d} {start_y:d}")
+        final_y = h
+        for j in reversed(range(h)):
+            if c.data[j]:
+                break
+            final_y -= 1
         odd = True
-        for j in range(start_y, h):
+        for j in range(start_y, final_y):
             # printer(f"# {c.data[j]:0{w}b}")
             odd = not odd
             v = c.data[j] << start_x
