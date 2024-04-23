@@ -24,7 +24,7 @@ def show(lines):
             for x, c in enumerate(line):
                 if c not in "01":
                     return error("expected binary")
-                pix[x, y] = 1 if c != "0" else 0
+                pix[x, y] = 0 if c != "0" else 1
             y += 1
             continue
 
