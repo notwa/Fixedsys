@@ -416,7 +416,7 @@ if __name__ == "__main__":
             fname += f"${i:02d}.fd"
         else:
             fname = f"{prefix}{i:02d}.fd"
-        fp = open(fname, "w", encoding="utf-8")
+        fp = open(fname, "w", newline="\n", encoding="utf-8")
         printer = lambda *args, **kwargs: print(*args, file=fp, **kwargs)
         savefont(fonts[i], printer, fancy=fancy)
         fp.close()
