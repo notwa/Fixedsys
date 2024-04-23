@@ -1,6 +1,5 @@
 from PIL import Image
 import re
-import sys
 
 
 def show(filename):
@@ -46,4 +45,8 @@ def show(filename):
     im.save(filename + ".png")
 
 
-show(sys.argv[1])
+if __name__ == "__main__":
+    import sys
+
+    for arg in sys.argv[1:]:
+        show(arg)
