@@ -362,6 +362,6 @@ for i in range(len(fonts)):
         fname = outfile
     else:
         fname = prefix + "%02d" % i + ".fd"
-    fp = open(fname, "w")
+    fp = open(fname, "w", encoding="utf-8")
     savefont(fonts[i], fp)
     fp.close()
