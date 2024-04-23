@@ -339,7 +339,7 @@ if __name__ == "__main__":
                     lament("option -p requires an argument")
                     sys.exit(1)
             else:
-                lament("ignoring unrecognised option " + a[0])
+                lament(f"ignoring unrecognised option {a[0]}")
                 a = a[1:]
         else:
             if infile is not None:
