@@ -182,22 +182,15 @@ def dofnt(fnt):
         lament("Face name not contained within font data")
         return None
     f.facename = asciz(fnt[off_facename:])
-    # print "Face name", f.facename
     f.copyright = asciz(fnt[6:66] + b"\0")
-    # print "Copyright", f.copyright
     f.pointsize = fromword(fnt[0x44:])
-    # print "Point size", f.pointsize
     f.ascent = fromword(fnt[0x4A:])
-    # print "Ascent", f.ascent
     f.height = fromword(fnt[0x58:])
-    # print "Height", f.height
     f.italic = frombyte(fnt[0x50:]) != 0
     f.underline = frombyte(fnt[0x51:]) != 0
     f.strikeout = frombyte(fnt[0x52:]) != 0
     f.weight = fromword(fnt[0x53:])
     f.charset = frombyte(fnt[0x55:])
-    # print "Attrs", f.italic, f.underline, f.strikeout, f.weight
-    # print "Charset", f.charset
     # Read the char table.
     if version == 0x200:
         ctstart = 0x76
@@ -220,12 +213,10 @@ def dofnt(fnt):
             off = fromword(fnt[entry + 2 :])
         else:
             off = fromdword(fnt[entry + 2 :])
-        # print "Char", i, "width", w, "offset", off, "filelen", len(fnt)
         widthbytes = (w + 7) // 8
         for j in range(f.height):
             for k in range(widthbytes):
                 bytepos = off + k * f.height + j
-                # print bytepos, "->", hex(frombyte(fnt[bytepos:]))
                 f.chars[i].data[j] = f.chars[i].data[j] << 8
                 f.chars[i].data[j] = f.chars[i].data[j] | frombyte(fnt[bytepos:])
             f.chars[i].data[j] = f.chars[i].data[j] >> (8 * widthbytes - w)
@@ -255,7 +246,6 @@ def nefon(fon, neoff):
                 lament("Resource overruns file boundaries")
                 return None
             if rtype == 0x8008:  # this is an actual font
-                # print "Font at", start, "size", size
                 font = dofnt(fon[start : start + size])
                 if font is None:
                     lament(f"Failed to read font resource at {start:x}")
