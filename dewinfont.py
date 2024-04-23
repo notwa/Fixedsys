@@ -310,64 +310,65 @@ def isfon(data):
         return 0  # FNT
 
 
-a = sys.argv[1:]
-options = 1
-outfile = None
-prefix = None
-infile = None
-if len(a) == 0:
-    print("usage: dewinfont [-o outfile | -p prefix] file")
-    sys.exit(0)
-while len(a) > 0:
-    if a[0] == "--":
-        options = 0
-        a = a[1:]
-    elif options and a[0][0:1] == "-":
-        if a[0] == "-o":
-            try:
-                outfile = a[1]
-                a = a[2:]
-            except IndexError:
-                lament("option -o requires an argument")
-                sys.exit(1)
-        elif a[0] == "-p":
-            try:
-                prefix = a[1]
-                a = a[2:]
-            except IndexError:
-                lament("option -p requires an argument")
-                sys.exit(1)
-        else:
-            lament("ignoring unrecognised option " + a[0])
+if __name__ == "__main__":
+    a = sys.argv[1:]
+    options = 1
+    outfile = None
+    prefix = None
+    infile = None
+    if len(a) == 0:
+        print("usage: dewinfont [-o outfile | -p prefix] file")
+        sys.exit(0)
+    while len(a) > 0:
+        if a[0] == "--":
+            options = 0
             a = a[1:]
-    else:
-        if infile is not None:
-            lament("one input file at once, please")
-            sys.exit(1)
-        infile = a[0]
-        a = a[1:]
+        elif options and a[0][0:1] == "-":
+            if a[0] == "-o":
+                try:
+                    outfile = a[1]
+                    a = a[2:]
+                except IndexError:
+                    lament("option -o requires an argument")
+                    sys.exit(1)
+            elif a[0] == "-p":
+                try:
+                    prefix = a[1]
+                    a = a[2:]
+                except IndexError:
+                    lament("option -p requires an argument")
+                    sys.exit(1)
+            else:
+                lament("ignoring unrecognised option " + a[0])
+                a = a[1:]
+        else:
+            if infile is not None:
+                lament("one input file at once, please")
+                sys.exit(1)
+            infile = a[0]
+            a = a[1:]
 
-fp = open(infile, "rb")
-data = fp.read()
-fp.close()
-
-if isfon(data):
-    fonts = dofon(data)
-else:
-    fonts = [dofnt(data)]
-
-if len(fonts) > 1 and prefix is None:
-    lament("more than one font in file; use -p prefix")
-    sys.exit(1)
-if outfile is None and prefix is None:
-    lament("please specify -o outfile or -p prefix")
-    sys.exit(1)
-
-for i in range(len(fonts)):
-    if len(fonts) == 1 and outfile is not None:
-        fname = outfile
-    else:
-        fname = f"{prefix}{i:02d}.fd"
-    fp = open(fname, "w", encoding="utf-8")
-    savefont(fonts[i], lambda *args, **kwargs: print(*args, file=fp, **kwargs))
+    fp = open(infile, "rb")
+    data = fp.read()
     fp.close()
+
+    if isfon(data):
+        fonts = dofon(data)
+    else:
+        fonts = [dofnt(data)]
+
+    if len(fonts) > 1 and prefix is None:
+        lament("more than one font in file; use -p prefix")
+        sys.exit(1)
+    if outfile is None and prefix is None:
+        lament("please specify -o outfile or -p prefix")
+        sys.exit(1)
+
+    for i in range(len(fonts)):
+        if len(fonts) == 1 and outfile is not None:
+            fname = outfile
+        else:
+            fname = f"{prefix}{i:02d}.fd"
+        fp = open(fname, "w", encoding="utf-8")
+        savefont(fonts[i], lambda *args, **kwargs: print(*args, file=fp, **kwargs))
+        fp.close()
