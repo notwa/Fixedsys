@@ -318,7 +318,7 @@ if __name__ == "__main__":
     infile = None
     if len(a) == 0:
         print("usage: dewinfont [-o outfile | -p prefix] file")
-        sys.exit(0)
+        exit(0)
     while len(a) > 0:
         if a[0] == "--":
             options = 0
@@ -330,21 +330,21 @@ if __name__ == "__main__":
                     a = a[2:]
                 except IndexError:
                     lament("option -o requires an argument")
-                    sys.exit(1)
+                    exit(64)
             elif a[0] == "-p":
                 try:
                     prefix = a[1]
                     a = a[2:]
                 except IndexError:
                     lament("option -p requires an argument")
-                    sys.exit(1)
+                    exit(64)
             else:
                 lament(f"ignoring unrecognised option {a[0]}")
                 a = a[1:]
         else:
             if infile is not None:
                 lament("one input file at once, please")
-                sys.exit(1)
+                exit(64)
             infile = a[0]
             a = a[1:]
 
