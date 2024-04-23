@@ -355,8 +355,9 @@ if __name__ == "__main__":
     outfile = None
     prefix = None
     infile = None
+    fancy = False
     if len(a) == 0:
-        print("usage: dewinfont [-o outfile | -p prefix] file")
+        print("usage: dewinfont [-o outfile | -p prefix | -x] file")
         exit(0)
     while len(a) > 0:
         if a[0] == "--":
@@ -377,6 +378,9 @@ if __name__ == "__main__":
                 except IndexError:
                     lament("option -p requires an argument")
                     exit(64)
+            elif a[0] == "-x":
+                fancy = True
+                a = a[1:]
             else:
                 lament(f"ignoring unrecognised option {a[0]}")
                 a = a[1:]
@@ -409,5 +413,6 @@ if __name__ == "__main__":
         else:
             fname = f"{prefix}{i:02d}.fd"
         fp = open(fname, "w", encoding="utf-8")
-        savefont(fonts[i], lambda *args, **kwargs: print(*args, file=fp, **kwargs))
+        printer = lambda *args, **kwargs: print(*args, file=fp, **kwargs)
+        savefont(fonts[i], printer, fancy=fancy)
         fp.close()
