@@ -77,10 +77,7 @@ def savefancy(f, i, printer, *, single=False, chars1=" █", chars2=" ▀▄█"
     def writeout(rows):
         assert rows in (1, 2), f"{rows=}"
         c = "." if rows == 1 else ":"
-        s = c
-        for b in buf:
-            s += charset[b]
-        s = s.rstrip(" ")
+        s = c + "".join(charset[b] for b in buf).rstrip(" ")
         if s != c:
             printer(s)
 
