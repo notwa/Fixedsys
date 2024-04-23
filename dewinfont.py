@@ -357,9 +357,6 @@ if __name__ == "__main__":
     else:
         fonts = [dofnt(data)]
 
-    if len(fonts) > 1 and prefix is None:
-        lament("more than one font in file; use -p prefix")
-        sys.exit(1)
     if outfile is None and prefix is None:
         lament("please specify -o outfile or -p prefix")
         sys.exit(1)
@@ -367,6 +364,9 @@ if __name__ == "__main__":
     for i in range(len(fonts)):
         if len(fonts) == 1 and outfile is not None:
             fname = outfile
+        elif outfile is not None:
+            fname = outfile.removesuffix(".fd")
+            fname += f"${i:02d}.fd"
         else:
             fname = f"{prefix}{i:02d}.fd"
         fp = open(fname, "w", encoding="utf-8")
