@@ -356,10 +356,10 @@ if __name__ == "__main__":
     prefix = None
     infile = None
     fancy = False
-    if len(a) == 0:
+    if not a:
         print("usage: dewinfont [-o outfile | -p prefix | -x] file")
         exit(0)
-    while len(a) > 0:
+    while a:
         if a[0] == "--":
             options = 0
             a = a[1:]
