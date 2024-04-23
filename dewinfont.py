@@ -72,7 +72,8 @@ class Char:
 def savefancy(f, i, printer, *, single=False, chars1=" █", chars2=" ▀▄█"):
     charset = chars1 if single else chars2
     c = f.chars[i]
-    printer(f"new {c.width:d}")
+    w, h = c.width, f.height
+    printer(f"new {w:d}")
 
     def writeout(rows):
         assert rows in (1, 2), f"{rows=}"
@@ -81,8 +82,7 @@ def savefancy(f, i, printer, *, single=False, chars1=" █", chars2=" ▀▄█"
         if s != c:
             printer(s)
 
-    if c.width != 0:
-        w, h = c.width, f.height
+    if w != 0:
         buf = [0] * w
         start_x, start_y = 0, 0
         for j in range(w):
