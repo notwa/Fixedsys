@@ -192,7 +192,7 @@ def nefon(fon, neoff):
             if rtype == 0x8008:  # this is an actual font
                 # print "Font at", start, "size", size
                 font = dofnt(fon[start : start + size])
-                if font == None:
+                if font is None:
                     sys.stderr.write("Failed to read font resource at %x" % start)
                     return None
                 ret = ret + [font]
@@ -265,7 +265,7 @@ def pefon(fon, peoff):
         start = rva - secrva
         size = fromdword(rsrc[off + 4 :])
         font = dofnt(rsrc[start : start + size])
-        if font == None:
+        if font is None:
             sys.stderr.write("Failed to read font resource at %x" % start)
             return None
         ret = ret + [font]
@@ -328,7 +328,7 @@ while len(a) > 0:
             sys.stderr.write("ignoring unrecognised option " + a[0] + "\n")
             a = a[1:]
     else:
-        if infile != None:
+        if infile is not None:
             sys.stderr.write("one input file at once, please\n")
             sys.exit(1)
         infile = a[0]
@@ -343,15 +343,15 @@ if isfon(data):
 else:
     fonts = [dofnt(data)]
 
-if len(fonts) > 1 and prefix == None:
+if len(fonts) > 1 and prefix is None:
     sys.stderr.write("more than one font in file; use -p prefix\n")
     sys.exit(1)
-if outfile == None and prefix == None:
+if outfile is None and prefix is None:
     sys.stderr.write("please specify -o outfile or -p prefix\n")
     sys.exit(1)
 
 for i in range(len(fonts)):
-    if len(fonts) == 1 and outfile != None:
+    if len(fonts) == 1 and outfile is not None:
         fname = outfile
     else:
         fname = prefix + "%02d" % i + ".fd"
