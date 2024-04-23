@@ -201,8 +201,8 @@ def nefon(fon, neoff):
                 font = dofnt(fon[start : start + size])
                 if font is None:
                     lament("Failed to read font resource at %x" % start)
-                    return None
-                ret = ret + [font]
+                else:
+                    ret = ret + [font]
             p = p + 12  # start, size, flags, name/id, 4 bytes reserved
     return ret
 
@@ -274,8 +274,8 @@ def pefon(fon, peoff):
         font = dofnt(rsrc[start : start + size])
         if font is None:
             lament("Failed to read font resource at %x" % start)
-            return None
-        ret = ret + [font]
+        else:
+            ret = ret + [font]
     return ret
 
 
