@@ -113,7 +113,7 @@ def dofnt(fnt):
     version = fromword(fnt[0:])
     ftype = fromword(fnt[0x42:])
     if ftype & 1:
-        lament("This font is a vector font\n")
+        lament("This font is a vector font")
         return None
     off_facename = fromdword(fnt[0x69:])
     if off_facename < 0 or off_facename > len(fnt):
@@ -190,7 +190,7 @@ def nefon(fon, neoff):
             start = fromword(fon[p:]) << shift
             size = fromword(fon[p + 2 :]) << shift
             if start < 0 or size < 0 or start + size > len(fon):
-                lament("Resource overruns file boundaries\n")
+                lament("Resource overruns file boundaries")
                 return None
             if rtype == 0x8008:  # this is an actual font
                 # print "Font at", start, "size", size
@@ -240,7 +240,7 @@ def pefon(fon, peoff):
         if secname == b".rsrc":
             break
     if secname != b".rsrc":
-        lament("Unable to locate resource section\n")
+        lament("Unable to locate resource section")
         return None
     # Now we've found the resource section, let's throw away the rest.
     rsrc = fon[secptr : secptr + secsize]
@@ -279,7 +279,7 @@ def dofon(fon):
     "Split a .FON up into .FNTs and pass each to dofnt."
     # Check the MZ header.
     if fon[0:2] != b"MZ":
-        lament("MZ signature not found\n")
+        lament("MZ signature not found")
         return None
     # Find the NE header.
     neoff = fromdword(fon[0x3C:])
@@ -288,7 +288,7 @@ def dofon(fon):
     elif fon[neoff : neoff + 4] == b"PE\0\0":
         return pefon(fon, neoff)
     else:
-        lament("NE or PE signature not found\n")
+        lament("NE or PE signature not found")
         return None
 
 
@@ -318,21 +318,21 @@ while len(a) > 0:
                 outfile = a[1]
                 a = a[2:]
             except IndexError:
-                lament("option -o requires an argument\n")
+                lament("option -o requires an argument")
                 sys.exit(1)
         elif a[0] == "-p":
             try:
                 prefix = a[1]
                 a = a[2:]
             except IndexError:
-                lament("option -p requires an argument\n")
+                lament("option -p requires an argument")
                 sys.exit(1)
         else:
-            lament("ignoring unrecognised option " + a[0] + "\n")
+            lament("ignoring unrecognised option " + a[0])
             a = a[1:]
     else:
         if infile is not None:
-            lament("one input file at once, please\n")
+            lament("one input file at once, please")
             sys.exit(1)
         infile = a[0]
         a = a[1:]
@@ -347,10 +347,10 @@ else:
     fonts = [dofnt(data)]
 
 if len(fonts) > 1 and prefix is None:
-    lament("more than one font in file; use -p prefix\n")
+    lament("more than one font in file; use -p prefix")
     sys.exit(1)
 if outfile is None and prefix is None:
-    lament("please specify -o outfile or -p prefix\n")
+    lament("please specify -o outfile or -p prefix")
     sys.exit(1)
 
 for i in range(len(fonts)):
