@@ -4,12 +4,10 @@ from PIL import Image
 def show(lines):
     chars, char = [], None
     x, y = 0, 0
-    rows = 14
-    cols = 16
+    rows, cols = 14, 16
     max_width = 0
     width, height, ascent, pointsize = -1, -1, -1, -1
-    charset = -1
-    i = -1
+    charset, i = -1, -1
 
     for line in filter(bool, map(str.strip, lines)):
         error = lambda s: f"{s}: {line}"
@@ -18,7 +16,7 @@ def show(lines):
         elif line.startswith("0") or line.startswith("1"):
             if width < 0 or height < 0 or i < 0:
                 return error("unexpected data")
-            if x >= width or y >= height:
+            if y >= height:
                 return error("too much data")
             pix = char.load()
             for x, c in enumerate(line):
@@ -43,16 +41,15 @@ def show(lines):
                     pass
                 elif single:
                     pix[x + o, y] = 0
+                elif c == "▀":
+                    pix[x + o, y + 0] = 0
+                elif c == "█":
+                    pix[x + o, y + 0] = 0
+                    pix[x + o, y + 1] = 0
+                elif c == "▄":
+                    pix[x + o, y + 1] = 0
                 else:
-                    if c == "▀":
-                        pix[x + o, y + 0] = 0
-                    elif c == "█":
-                        pix[x + o, y + 0] = 0
-                        pix[x + o, y + 1] = 0
-                    elif c == "▄":
-                        pix[x + o, y + 1] = 0
-                    else:
-                        return error("unknown character")
+                    return error("unknown character")
             y += 1 if single else 2
             continue
 
