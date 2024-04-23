@@ -21,20 +21,20 @@
 |------------|-------------|-------------|-------------|
 | ![vgaf874] | ![vgaf1255] | ![vgaf1256] | ![vgaf1257] |
 
-[8514fix]: https://raw.githubusercontent.com/libmaru/Fixedsys/master/8514/8514fix.png
-[vgafix]:  https://raw.githubusercontent.com/libmaru/Fixedsys/master/vga/vgafix.png
-[vgafixe]: https://raw.githubusercontent.com/libmaru/Fixedsys/master/vga/vgafixe.png
-[vgafixg]: https://raw.githubusercontent.com/libmaru/Fixedsys/master/vga/vgafixg.png
-[vgafixr]: https://raw.githubusercontent.com/libmaru/Fixedsys/master/vga/vgafixr.png
-[vgafixt]: https://raw.githubusercontent.com/libmaru/Fixedsys/master/vga/vgafixt.png
-[cvgafix]: https://raw.githubusercontent.com/libmaru/Fixedsys/master/vga/cvgafix.png
-[hvgafix]: https://raw.githubusercontent.com/libmaru/Fixedsys/master/vga/hvgafix.png
-[jvgafix]: https://raw.githubusercontent.com/libmaru/Fixedsys/master/vga/jvgafix.png
-[svgafix]: https://raw.githubusercontent.com/libmaru/Fixedsys/master/vga/svgafix.png
-[vgaf874]: https://raw.githubusercontent.com/libmaru/Fixedsys/master/vga/vgaf874.png
-[vgaf1255]: https://raw.githubusercontent.com/libmaru/Fixedsys/master/vga/vgaf1255.png
-[vgaf1256]: https://raw.githubusercontent.com/libmaru/Fixedsys/master/vga/vgaf1256.png
-[vgaf1257]: https://raw.githubusercontent.com/libmaru/Fixedsys/master/vga/vgaf1257.png
+[8514fix]: https://raw.githubusercontent.com/notwa/Fixedsys/master/8514/8514fix.png
+[vgafix]:  https://raw.githubusercontent.com/notwa/Fixedsys/master/vga/vgafix.png
+[vgafixe]: https://raw.githubusercontent.com/notwa/Fixedsys/master/vga/vgafixe.png
+[vgafixg]: https://raw.githubusercontent.com/notwa/Fixedsys/master/vga/vgafixg.png
+[vgafixr]: https://raw.githubusercontent.com/notwa/Fixedsys/master/vga/vgafixr.png
+[vgafixt]: https://raw.githubusercontent.com/notwa/Fixedsys/master/vga/vgafixt.png
+[cvgafix]: https://raw.githubusercontent.com/notwa/Fixedsys/master/vga/cvgafix.png
+[hvgafix]: https://raw.githubusercontent.com/notwa/Fixedsys/master/vga/hvgafix.png
+[jvgafix]: https://raw.githubusercontent.com/notwa/Fixedsys/master/vga/jvgafix.png
+[svgafix]: https://raw.githubusercontent.com/notwa/Fixedsys/master/vga/svgafix.png
+[vgaf874]: https://raw.githubusercontent.com/notwa/Fixedsys/master/vga/vgaf874.png
+[vgaf1255]: https://raw.githubusercontent.com/notwa/Fixedsys/master/vga/vgaf1255.png
+[vgaf1256]: https://raw.githubusercontent.com/notwa/Fixedsys/master/vga/vgaf1256.png
+[vgaf1257]: https://raw.githubusercontent.com/notwa/Fixedsys/master/vga/vgaf1257.png
 
 
 # Naming Convention
