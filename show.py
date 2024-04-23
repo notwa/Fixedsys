@@ -1,34 +1,76 @@
 from PIL import Image
-import re
 
 
 def show(filename):
     f = open(filename)
-    for i in range(5):
-        f.readline()
-    height = int(re.match("height (\d+)", f.readline()).group(1))
-    for i in range(10):
-        f.readline()
 
     chars = []
+    x, y = 0, 0
     rows = 14
     cols = 16
     max_width = 0
-    for i in range(256):
-        assert f.readline() == "char %d\n" % i
-        width = int(re.match("width (\d+)", f.readline()).group(1))
-        if i < 32 and width:
-            rows = 16
-        max_width = max(max_width, width)
-        char = Image.new("1", (width, height), 1)
-        if width:
-            pix = char.load()
-            for y in range(height):
-                line = f.readline()
-                for x in range(width):
-                    pix[x, y] = 1 - int(line[x])
-        chars.append(char)
-        f.readline()
+    width, height, ascent, pointsize = -1, -1, -1, -1
+    charset = -1
+    i = -1
+
+    for line in filter(bool, map(str.strip, f)):
+        if line.startswith("#"):
+            continue
+        elif line.startswith("0") or line.startswith("1"):
+            error = lambda s: f"{s}: {line}"
+            if width < 0 or height < 0 or i < 0:
+                return error("unexpected data")
+            if x >= width or y >= height:
+                return error("too much data")
+            pix = chars[-1].load()
+            for x, c in enumerate(line):
+                if c not in "01":
+                    return error("expected binary")
+                pix[x, y] = 1 if c != "0" else 0
+            y += 1
+            continue
+
+        k, _, v = line.partition(" ")
+        v = int(v) if v and all(c in "0123456789" for c in v) else v
+        error = lambda s: f"{s}: {k}={v}"
+        match (k, v):
+            case ["facename", facename]:
+                pass
+            case ["copyright", copyright]:
+                pass
+            case ["height", height]:
+                if not isinstance(height, int):
+                    return error("invalid integer")
+                if height > 255:
+                    return error("value out of range")
+            case ["ascent", ascent]:
+                pass
+            case ["pointsize", pointsize]:
+                pass
+            case ["charset", charset]:
+                pass
+            case ["char", i]:
+                if height < 0:
+                    return error("unexpected property")
+                if not isinstance(i, int):
+                    return error("invalid integer")
+                if i > 255:
+                    return error("value out of range")
+                if i < 32 and width:
+                    rows = 16
+            case ["width", width]:
+                if height < 0 or i < 0:
+                    return error("unexpected property")
+                if not isinstance(width, int):
+                    return error("invalid integer")
+                if width > 255:
+                    return error("value out of range")
+                max_width = max(max_width, width)
+                char = Image.new("1", (width, height), 1)
+                chars.append(char)
+                x, y = 0, 0
+            case _:
+                return error("unknown property")
 
     im = Image.new("1", ((max_width + 1) * cols + 1, (height + 1) * rows + 1), 0)
     skip = 16 - rows
@@ -48,5 +90,9 @@ def show(filename):
 if __name__ == "__main__":
     import sys
 
+    error = None
     for arg in sys.argv[1:]:
-        show(arg)
+        if error := show(arg):
+            print(f"{sys.argv[0]}: {arg}: {error}", flush=True, file=sys.stderr)
+    if error:
+        exit(1)
