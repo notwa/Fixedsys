@@ -46,18 +46,18 @@ def asciz(s):
     return s
 
 
-def bool(n):
+def ans(n):
     if n:
         return "yes"
     else:
         return "no"
 
 
-class font:
+class Font:
     pass
 
 
-class char:
+class Char:
     pass
 
 
@@ -73,13 +73,13 @@ def savefont(f, file):
     file.write("pointsize " + "%d" % f.pointsize + "\n\n")
     if not f.italic:
         file.write("# ")
-    file.write("italic " + bool(f.italic) + "\n")
+    file.write("italic " + ans(f.italic) + "\n")
     if not f.underline:
         file.write("# ")
-    file.write("underline " + bool(f.underline) + "\n")
+    file.write("underline " + ans(f.underline) + "\n")
     if not f.strikeout:
         file.write("# ")
-    file.write("strikeout " + bool(f.strikeout) + "\n")
+    file.write("strikeout " + ans(f.strikeout) + "\n")
     if f.weight == 400:
         file.write("# ")
     file.write("weight " + "%d" % f.weight + "\n\n")
@@ -104,7 +104,7 @@ def savefont(f, file):
 
 def dofnt(fnt):
     "Create an internal font description from a .FNT-shaped string."
-    f = font()
+    f = Font()
     f.chars = [None] * 256
     version = fromword(fnt[0:])
     ftype = fromword(fnt[0x42:])
@@ -141,7 +141,7 @@ def dofnt(fnt):
         ctsize = 6
     maxwidth = 0
     for i in range(256):
-        f.chars[i] = char()
+        f.chars[i] = Char()
         f.chars[i].width = 0
         f.chars[i].data = [0] * f.height
     firstchar = frombyte(fnt[0x5F:])
