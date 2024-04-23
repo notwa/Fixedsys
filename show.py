@@ -82,8 +82,6 @@ def show(lines):
                     return error("invalid integer")
                 if i > 255:
                     return error("value out of range")
-                if i < 32 and width >= 0:
-                    rows = 16
             case ["width" | "new", width]:
                 if height < 0 or i < 0 and k == "width":
                     return error("unexpected property")
@@ -91,6 +89,8 @@ def show(lines):
                     return error("invalid integer")
                 if width > 255:
                     return error("value out of range")
+                if i < 32 and width > 0:
+                    rows = 16
                 max_width = max(max_width, width)
                 if char is not None:
                     chars.append(char)
