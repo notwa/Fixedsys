@@ -1,9 +1,7 @@
 from PIL import Image
 
 
-def show(filename):
-    f = open(filename)
-
+def show(lines):
     chars = []
     x, y = 0, 0
     rows = 14
@@ -13,7 +11,7 @@ def show(filename):
     charset = -1
     i = -1
 
-    for line in filter(bool, map(str.strip, f)):
+    for line in filter(bool, map(str.strip, lines)):
         if line.startswith("#"):
             continue
         elif line.startswith("0") or line.startswith("1"):
@@ -80,19 +78,30 @@ def show(filename):
         char = Image.new("1", (max_width, height), 1)
         char.paste(chars[i], (0, 0))
         im.paste(char, (x, y))
-
-    if filename.endswith(".fd"):
-        filename = filename[:-3]
-
-    im.save(filename + ".png")
+    return im
 
 
 if __name__ == "__main__":
+    from pathlib import Path
     import sys
 
-    error = None
+    ok = True
     for arg in sys.argv[1:]:
-        if error := show(arg):
+        error = None
+        path = Path(arg)
+        out = path.with_suffix(".png")
+        try:
+            with open(path, encoding="utf-8") as f:
+                result = show(f)
+                if isinstance(result, Image.Image):
+                    result.save(out)
+                else:
+                    error = result
+        except OSError as e:
+            error = e.strerror
+        except Exception as e:
+            error = f"{type(e).__name__}: {e}"
+        if error:
             print(f"{sys.argv[0]}: {arg}: {error}", flush=True, file=sys.stderr)
-    if error:
+    if not ok:
         exit(1)
