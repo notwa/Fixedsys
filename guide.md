@@ -15,8 +15,8 @@
 | j8514fix.fon    | Fixedsys    | Japanese    | 10x22 /20, 12pt | ![j8514fix.fon](spec/j8514fix.png) |
 | h8514fix.fon    | Fixedsys    | Korean      | 10x20 /16, 12pt | ![h8514fix.fon](spec/h8514fix.png) |
 | 8514fixr.fon    | Fixedsys    | Russian     | 10x20 /16, 12pt | ![8514fixr.fon](spec/8514fixr.png) |
-| s8514fix.fon    | Fixedsys    | S. Chinese  | 10x20 /16, 12pt | ![s8514fix.fon](spec/s8514fix.png) |
-| c8514fix.fon    | Fixedsys    | T. Chinese  | 10x20 /16, 12pt | ![c8514fix.fon](spec/c8514fix.png) |
+| s8514fix.fon    | Fixedsys    | Simplified Chinese  | 10x20 /16, 12pt | ![s8514fix.fon](spec/s8514fix.png) |
+| c8514fix.fon    | Fixedsys    | Traditional Chinese | 10x20 /16, 12pt | ![c8514fix.fon](spec/c8514fix.png) |
 | 85f874.fon      | Fixedsys    | Thai        | 10x20 /16, 12pt | ![85f874.fon](spec/85f874.png)     |
 | 8514fixt.fon    | Fixedsys    | Turkish     | 10x20 /16, 12pt | ![8514fixt.fon](spec/8514fixt.png) |
 | 8514sys.fon     | System      | American    |  Nx20 /16, 10pt | ![8514sys.fon](spec/8514sys.png)   |
@@ -28,11 +28,11 @@
 | j8514sys.fon    | System      | Japanese    |  Nx22 /20, 12pt | ![j8514sys.fon](spec/j8514sys.png) |
 | h8514sys.fon    | System      | Korean      |  Nx20 /16, 10pt | ![h8514sys.fon](spec/h8514sys.png) |
 | 8514sysr.fon    | System      | Russian     |  Nx20 /16, 10pt | ![8514sysr.fon](spec/8514sysr.png) |
-| s8514sys.fon    | System      | S. Chinese  |  Nx20 /16, 10pt | ![s8514sys.fon](spec/s8514sys.png) |
-| c8514sys.fon    | System      | T. Chinese  |  Nx20 /16, 10pt | ![c8514sys.fon](spec/c8514sys.png) |
+| s8514sys.fon    | System      | Simplified Chinese  |  Nx20 /16, 10pt | ![s8514sys.fon](spec/s8514sys.png) |
+| c8514sys.fon    | System      | Traditional Chinese |  Nx20 /16, 10pt | ![c8514sys.fon](spec/c8514sys.png) |
 | 85s874.fon      | System      | Thai        |  Nx20 /16, 10pt | ![85s874.fon](spec/85s874.png)     |
 | 8514syst.fon    | System      | Turkish     |  Nx20 /16, 10pt | ![8514syst.fon](spec/8514syst.png) |
-| 8514oem.fon     | Terminal    | American    | 10x20 /16, 12pt | ![8514oem.fon](spec/8514oem.png)   |
+| 8514oem.fon     | Terminal    | CP437       | 10x20 /16, 12pt | ![8514oem.fon](spec/8514oem.png)   |
 | 85775.fon       | Terminal    | CP775       | 10x20 /16, 12pt | ![85775.fon](spec/85775.png)       |
 | 85855.fon       | Terminal    | CP855       | 10x20 /16, 12pt | ![85855.fon](spec/85855.png)       |
 | 8514oeme.fon    | Terminal    | European    | 10x20 /16, 12pt | ![8514oeme.fon](spec/8514oeme.png) |
@@ -40,8 +40,8 @@
 | j8514oem.fon    | Terminal    | Japanese    | 10x22 /20, 12pt | ![j8514oem.fon](spec/j8514oem.png) |
 | h8514oem.fon    | Terminal    | Korean      | 10x20 /16, 12pt | ![h8514oem.fon](spec/h8514oem.png) |
 | 8514oemr.fon    | Terminal    | Russian     | 10x20 /16, 12pt | ![8514oemr.fon](spec/8514oemr.png) |
-| s8514oem.fon    | Terminal    | S. Chinese  | 10x20 /16, 12pt | ![s8514oem.fon](spec/s8514oem.png) |
-| c8514oem.fon    | Terminal    | T. Chinese  | 10x22 /20, 12pt | ![c8514oem.fon](spec/c8514oem.png) |
+| s8514oem.fon    | Terminal    | Simplified Chinese  | 10x20 /16, 12pt | ![s8514oem.fon](spec/s8514oem.png) |
+| c8514oem.fon    | Terminal    | Traditional Chinese | 10x22 /20, 12pt | ![c8514oem.fon](spec/c8514oem.png) |
 | 8514oemt.fon    | Terminal    | Turkish     | 10x20 /16, 12pt | ![8514oemt.fon](spec/8514oemt.png) |
 
 ### CGA
@@ -95,8 +95,8 @@
 | jvgafix.fon     | Fixedsys    | Japanese    |  8x18 /16, 12pt | ![jvgafix.fon](spec/jvgafix.png)   |
 | hvgafix.fon     | Fixedsys    | Korean      |  8x16 /13, 12pt | ![hvgafix.fon](spec/hvgafix.png)   |
 | vgafixr.fon     | Fixedsys    | Russian     |\*8x16 /12, 12pt | ![vgafixr.fon](spec/vgafixr.png)   |
-| svgafix.fon     | Fixedsys    | S. Chinese  |  8x16 /13, 12pt | ![svgafix.fon](spec/svgafix.png)   |
-| cvgafix.fon     | Fixedsys    | T. Chinese  |  8x16 /13, 12pt | ![cvgafix.fon](spec/cvgafix.png)   |
+| svgafix.fon     | Fixedsys    | Simplified Chinese  |  8x16 /13, 12pt | ![svgafix.fon](spec/svgafix.png)   |
+| cvgafix.fon     | Fixedsys    | Traditional Chinese |  8x16 /13, 12pt | ![cvgafix.fon](spec/cvgafix.png)   |
 | vgaf874.fon     | Fixedsys    | Thai        |  8x16 /12, 12pt | ![vgaf874.fon](spec/vgaf874.png)   |
 | vgafixt.fon     | Fixedsys    | Turkish     |  8x15 /12, 12pt | ![vgafixt.fon](spec/vgafixt.png)   |
 | vgasys.fon      | System      | American    |  Nx16 /13, 10pt | ![vgasys.fon](spec/vgasys.png)     |
@@ -108,11 +108,11 @@
 | jvgasys.fon     | System      | Japanese    |  Nx18 /16, 12pt | ![jvgasys.fon](spec/jvgasys.png)   |
 | hvgasys.fon     | System      | Korean      |  Nx16 /13, 10pt | ![hvgasys.fon](spec/hvgasys.png)   |
 | vgasysr.fon     | System      | Russian     |  Nx16 /13, 10pt | ![vgasysr.fon](spec/vgasysr.png)   |
-| svgasys.fon     | System      | S. Chinese  |  Nx16 /13, 10pt | ![svgasys.fon](spec/svgasys.png)   |
-| cvgasys.fon     | System      | T. Chinese  |  Nx16 /13, 10pt | ![cvgasys.fon](spec/cvgasys.png)   |
+| svgasys.fon     | System      | Simplified Chinese  |  Nx16 /13, 10pt | ![svgasys.fon](spec/svgasys.png)   |
+| cvgasys.fon     | System      | Traditional Chinese |  Nx16 /13, 10pt | ![cvgasys.fon](spec/cvgasys.png)   |
 | vgas874.fon     | System      | Thai        |  Nx16 /13, 10pt | ![vgas874.fon](spec/vgas874.png)   |
 | vgasyst.fon     | System      | Turkish     |  Nx16 /13, 10pt | ![vgasyst.fon](spec/vgasyst.png)   |
-| vgaoem.fon      | Terminal    | American    |  8x12 /10, 12pt | ![vgaoem.fon](spec/vgaoem.png)     |
+| vgaoem.fon      | Terminal    | CP437       |  8x12 /10, 12pt | ![vgaoem.fon](spec/vgaoem.png)     |
 | vga737.fon      | Terminal    | CP737       |  8x12 /10, 12pt | ![vga737.fon](spec/vga737.png)     |
 | vga775.fon      | Terminal    | CP775       |\*8x12 /10, 12pt | ![vga775.fon](spec/vga775.png)     |
 | vga850.fon      | Terminal    | CP850       |  8x12 /10, 12pt | ![vga850.fon](spec/vga850.png)     |
