@@ -141,7 +141,7 @@ def show(lines_or_font, *, cols=None, rows=None, skip=32, offset=0):
     if font.error:
         return font.error
 
-    if any(font.chars.get(i + offset, None) for i in range(skip)):
+    if any(i + offset in font.chars for i in range(skip)):
         skip = 0
 
     blank = Image.new("1", (font.max_width, font.height), 1)
@@ -177,7 +177,7 @@ if __name__ == "__main__":
                     show(font).save(out)
                 else:
                     for offset in range(0, end, 256):
-                        if any(font.chars.get(i + offset, None) for i in range(256)):
+                        if any(i + offset in font.chars for i in range(256)):
                             part_out = out.with_stem(f"{out.stem}.{offset // 256}")
                             show(font, offset=offset).save(part_out)
         except OSError as e:
