@@ -1,13 +1,18 @@
 from PIL import Image
 
 
-def show(lines):
+def show(lines, *, cols=None, rows=None, skip=32):
+    if cols is None and rows is None:
+        cols, rows = 16, 16
+    cols = 256 // rows if cols is None else cols
+    rows = 256 // cols if rows is None else rows
+
     chars, char = [], None
     x, y = 0, 0
-    rows, cols = 14, 16
     max_width = 0
     width, height, ascent, pointsize = -1, -1, -1, -1
     charset, i = -1, -1
+    assert rows * cols == 256, f"invalid dimensions: {cols=}, {rows=}"
 
     for line in filter(bool, map(str.strip, lines)):
         error = lambda s: f"{s}: {line}"
@@ -94,8 +99,8 @@ def show(lines):
                     return error("invalid integer")
                 if width > 255:
                     return error("value out of range")
-                if i < 32 and width > 0:
-                    rows = 16
+                if i < skip and width > 0:
+                    skip = 0
                 max_width = max(max_width, width)
                 if char is not None:
                     chars.append(char)
@@ -113,11 +118,11 @@ def show(lines):
     if char is not None:
         chars.append(char)
 
+    rows -= skip // cols
     im = Image.new("1", ((max_width + 1) * cols + 1, (height + 1) * rows + 1), 0)
-    skip = 16 - rows
-    for i in range(16 * skip, 256):
-        x = i % 16 * (max_width + 1) + 1
-        y = (i // 16 - skip) * (height + 1) + 1
+    for i in range(skip, 256):
+        x = i % cols * (max_width + 1) + 1
+        y = ((i - skip) // cols) * (height + 1) + 1
         char = Image.new("1", (max_width, height), 1)
         char.paste(chars[i], (0, 0))
         im.paste(char, (x, y))
