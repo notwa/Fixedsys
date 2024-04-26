@@ -73,7 +73,7 @@ def load(lines):
             case ["height", height]:
                 if not isinstance(height, int):
                     return error("invalid integer")
-                if height > 255:
+                if height >= 256:
                     return error("value out of range")
             case ["ascent", ascent]:
                 pass
@@ -110,7 +110,7 @@ def load(lines):
                     return error("unexpected property")
                 if not isinstance(width, int):
                     return error("invalid integer")
-                if width > 255:
+                if width >= 256:
                     return error("value out of range")
                 max_width = max(max_width, width)
                 char = Image.new("1", (width, height), 1) if width > 0 else None
@@ -168,11 +168,18 @@ if __name__ == "__main__":
         out = path.with_suffix(".png")
         try:
             with open(path, encoding="utf-8") as f:
-                result = show(f)
-                if isinstance(result, Image.Image):
-                    result.save(out)
+                font = load(f)
+            if font.error:
+                error = font.error
+            else:
+                end = max(font.chars.keys())
+                if end < 256:
+                    show(font).save(out)
                 else:
-                    error = result
+                    for offset in range(0, end, 256):
+                        if any(font.chars.get(i + offset, None) for i in range(256)):
+                            part_out = out.with_stem(f"{out.stem}.{offset // 256}")
+                            show(font, offset=offset).save(part_out)
         except OSError as e:
             error = e.strerror
         except Exception as e:
