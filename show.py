@@ -1,12 +1,13 @@
 from PIL import Image
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 
 
 @dataclass
 class Font:
-    max_width: int
-    height: int
-    chars: dict
+    error: str = ""
+    max_width: int = 0
+    height: int = 0
+    chars: dict = field(default_factory=dict)
 
 
 def load(lines):
@@ -18,7 +19,7 @@ def load(lines):
     new_format = None
 
     for line in filter(bool, map(str.strip, lines)):
-        error = lambda s: f"{s}: {line}"
+        error = lambda s: Font(f"{s}: {line}")
         if line.startswith("#"):
             continue
         elif line.startswith("0") or line.startswith("1"):
@@ -63,7 +64,7 @@ def load(lines):
 
         k, _, v = line.partition(" ")
         v = int(v) if v and all(c in "0123456789" for c in v) else v
-        error = lambda s: f"{s}: {k}={v}"
+        error = lambda s: Font(f"{s}: {k}={v}")
         match (k, v):
             case ["facename", facename]:
                 pass
@@ -137,6 +138,8 @@ def show(lines_or_font, *, cols=None, rows=None, skip=32, offset=0):
     assert rows * cols == 256, f"invalid dimensions: {cols=}, {rows=}"
 
     font = lines_or_font if isinstance(lines_or_font, Font) else load(lines_or_font)
+    if font.error:
+        return font.error
 
     if any(font.chars.get(i + offset, None) for i in range(skip)):
         skip = 0
