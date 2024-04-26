@@ -1,19 +1,21 @@
 from PIL import Image
+from dataclasses import dataclass
 
 
-def show(lines, *, cols=None, rows=None, skip=32, offset=0):
-    if cols is None and rows is None:
-        cols, rows = 16, 16
-    cols = 256 // rows if cols is None else cols
-    rows = 256 // cols if rows is None else rows
+@dataclass
+class Font:
+    max_width: int
+    height: int
+    chars: dict
 
+
+def load(lines):
     chars, char = {}, None
     x, y = 0, 0
     max_width = 0
     width, height, ascent, pointsize = -1, -1, -1, -1
     charset, index = -1, -1
     new_format = None
-    assert rows * cols == 256, f"invalid dimensions: {cols=}, {rows=}"
 
     for line in filter(bool, map(str.strip, lines)):
         error = lambda s: f"{s}: {line}"
@@ -124,17 +126,30 @@ def show(lines, *, cols=None, rows=None, skip=32, offset=0):
     if not new_format and char is not None:
         chars[old_index] = char
 
-    if any(chars.get(i + offset, None) for i in range(skip)):
+    return Font(max_width=max_width, height=height, chars=chars)
+
+
+def show(lines_or_font, *, cols=None, rows=None, skip=32, offset=0):
+    if cols is None and rows is None:
+        cols, rows = 16, 16
+    cols = 256 // rows if cols is None else cols
+    rows = 256 // cols if rows is None else rows
+    assert rows * cols == 256, f"invalid dimensions: {cols=}, {rows=}"
+
+    font = lines_or_font if isinstance(lines_or_font, Font) else load(lines_or_font)
+
+    if any(font.chars.get(i + offset, None) for i in range(skip)):
         skip = 0
 
-    blank = Image.new("1", (width, height), 1)
+    blank = Image.new("1", (font.max_width, font.height), 1)
     rows -= skip // cols
-    im = Image.new("1", ((max_width + 1) * cols + 1, (height + 1) * rows + 1), 0)
+    dims = ((font.max_width + 1) * cols + 1, (font.height + 1) * rows + 1)
+    im = Image.new("1", dims, 0)
     for i in range(skip, 256):
-        x = i % cols * (max_width + 1) + 1
-        y = ((i - skip) // cols) * (height + 1) + 1
-        char = Image.new("1", (max_width, height), 1)
-        char.paste(chars.get(i + offset, blank), (0, 0))
+        x = i % cols * (font.max_width + 1) + 1
+        y = ((i - skip) // cols) * (font.height + 1) + 1
+        char = Image.new("1", (font.max_width, font.height), 1)
+        char.paste(font.chars.get(i + offset, blank), (0, 0))
         im.paste(char, (x, y))
     return im
 
