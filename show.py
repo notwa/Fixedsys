@@ -1,17 +1,18 @@
 from PIL import Image
 
 
-def show(lines, *, cols=None, rows=None, skip=32):
+def show(lines, *, cols=None, rows=None, skip=32, offset=0):
     if cols is None and rows is None:
         cols, rows = 16, 16
     cols = 256 // rows if cols is None else cols
     rows = 256 // cols if rows is None else rows
 
-    chars, char = [], None
+    chars, char = {}, None
     x, y = 0, 0
     max_width = 0
     width, height, ascent, pointsize = -1, -1, -1, -1
-    charset, i = -1, -1
+    charset, index = -1, -1
+    new_format = None
     assert rows * cols == 256, f"invalid dimensions: {cols=}, {rows=}"
 
     for line in filter(bool, map(str.strip, lines)):
@@ -19,9 +20,9 @@ def show(lines, *, cols=None, rows=None, skip=32):
         if line.startswith("#"):
             continue
         elif line.startswith("0") or line.startswith("1"):
-            if width < 0 or height < 0 or i < 0:
+            if width < 0 or height < 0 or index < 0:
                 return error("unexpected data")
-            if y >= height:
+            if width == 0 or y >= height:
                 return error("too much data")
             pix = char.load()
             for x, c in enumerate(line):
@@ -36,7 +37,7 @@ def show(lines, *, cols=None, rows=None, skip=32):
             single = line[0] == "."
             if width < 0 or height < 0 or char is None:
                 return error("unexpected data")
-            if y >= height or not single and y == height - 1:
+            if width == 0 or y >= height or not single and y == height - 1:
                 return error("too much data")
             pix = char.load()
             for o, c in enumerate(line[1:]):
@@ -85,26 +86,31 @@ def show(lines, *, cols=None, rows=None, skip=32):
                 pass
             case ["charset", charset]:
                 pass
-            case ["char" | "push", i]:
-                if height < 0 or width < 0 and k == "push":
+            case ["char" | "push", index]:
+                if new_format is None:
+                    new_format = k == "push"
+                elif new_format != (k == "push"):
+                    return error("mixed formats")
+                if height < 0 or width < 0 and new_format:
                     return error("unexpected property")
-                if not isinstance(i, int):
+                if not isinstance(index, int):
                     return error("invalid integer")
-                if i > 255:
-                    return error("value out of range")
+                if char is not None:
+                    chars[index if new_format else old_index] = char
+                old_index = index
             case ["width" | "new", width]:
-                if height < 0 or i < 0 and k == "width":
+                if new_format is None:
+                    new_format = k == "new"
+                elif new_format != (k == "new"):
+                    return error("mixed formats")
+                if height < 0 or index < 0 and not new_format:
                     return error("unexpected property")
                 if not isinstance(width, int):
                     return error("invalid integer")
                 if width > 255:
                     return error("value out of range")
-                if i < skip and width > 0:
-                    skip = 0
                 max_width = max(max_width, width)
-                if char is not None:
-                    chars.append(char)
-                char = Image.new("1", (width, height), 1)
+                char = Image.new("1", (width, height), 1) if width > 0 else None
                 x, y = 0, 0
             case ["at", xy]:
                 x, _, y = xy.partition(" ")
@@ -115,16 +121,20 @@ def show(lines, *, cols=None, rows=None, skip=32):
                 x, y = int(x), int(y)
             case _:
                 return error("unknown property")
-    if char is not None:
-        chars.append(char)
+    if not new_format and char is not None:
+        chars[old_index] = char
 
+    if any(chars.get(i + offset, None) for i in range(skip)):
+        skip = 0
+
+    blank = Image.new("1", (width, height), 1)
     rows -= skip // cols
     im = Image.new("1", ((max_width + 1) * cols + 1, (height + 1) * rows + 1), 0)
     for i in range(skip, 256):
         x = i % cols * (max_width + 1) + 1
         y = ((i - skip) // cols) * (height + 1) + 1
         char = Image.new("1", (max_width, height), 1)
-        char.paste(chars[i], (0, 0))
+        char.paste(chars.get(i + offset, blank), (0, 0))
         im.paste(char, (x, y))
     return im
 
