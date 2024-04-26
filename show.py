@@ -145,6 +145,7 @@ if __name__ == "__main__":
         except Exception as e:
             error = f"{type(e).__name__}: {e}"
         if error:
+            ok = False
             print(f"{sys.argv[0]}: {arg}: {error}", flush=True, file=sys.stderr)
     if not ok:
         exit(1)
