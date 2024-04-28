@@ -171,7 +171,7 @@ if __name__ == "__main__":
                 font = load(f)
             if font.error:
                 error = font.error
-            else:
+            elif font.chars:
                 end = max(font.chars.keys())
                 if end < 256:
                     show(font).save(out)
