@@ -40,6 +40,11 @@ def savefancy(f, i, printer, *, single=False, chars1=" █", chars2=" ▀▄█"
     charset = chars1 if single else chars2
     c = f.chars[i]
     w, h = c.width, f.height
+
+    if not callable(printer):
+        fd = printer
+        printer = lambda *args, **kwargs: print(*args, file=fd, **kwargs)
+
     printer(f"new {w:d}")
 
     def writeout(rows):
