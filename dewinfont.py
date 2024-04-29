@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 
 # dewinfont is copyright 2001 Simon Tatham. All rights reserved.
 #
