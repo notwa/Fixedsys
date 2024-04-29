@@ -157,35 +157,29 @@ def show(lines_or_font, *, cols=None, rows=None, skip=32, offset=0):
     return im
 
 
-if __name__ == "__main__":
+def showit(arg):
     from pathlib import Path
-    import sys
 
-    ok = True
-    for arg in sys.argv[1:]:
-        error = None
-        path = Path(arg)
-        out = path.with_suffix(".png")
-        try:
-            with open(path, encoding="utf-8") as f:
-                font = load(f)
-            if font.error:
-                error = font.error
-            elif font.chars:
-                end = max(font.chars.keys())
-                if end < 256:
-                    show(font).save(out)
-                else:
-                    for offset in range(0, end, 256):
-                        if any(i + offset in font.chars for i in range(256)):
-                            part_out = out.with_stem(f"{out.stem}.{offset // 256}")
-                            show(font, offset=offset).save(part_out)
-        except OSError as e:
-            error = e.strerror
-        except Exception as e:
-            error = f"{type(e).__name__}: {e}"
-        if error:
-            ok = False
-            print(f"{sys.argv[0]}: {arg}: {error}", flush=True, file=sys.stderr)
-    if not ok:
-        exit(1)
+    path = Path(arg)
+    out = path.with_suffix(".png")
+    with open(path, encoding="utf-8") as f:
+        font = load(f)
+    if font.error:
+        return font.error
+    if not font.chars:
+        return
+
+    end = max(font.chars.keys())
+    if end < 256:
+        show(font).save(out)
+    else:
+        for offset in range(0, end, 256):
+            if any(i + offset in font.chars for i in range(256)):
+                part_out = out.with_stem(f"{out.stem}.{offset // 256}")
+                show(font, offset=offset).save(part_out)
+
+
+if __name__ == "__main__":
+    from cli import foreacharg
+
+    exit(0 if foreacharg(showit) else 1)
