@@ -305,6 +305,23 @@ def isfon(data):
         return 0  # FNT
 
 
+def fnt2fd(arg, fancy=False):
+    from pathlib import Path
+
+    path = Path(arg)
+    out = path.with_suffix(".fd")
+
+    with open(path, "rb") as f:
+        data = f.read()
+    fonts = dofon(data) if isfon(data) else [dofnt(data)]
+
+    for i, font in enumerate(fonts):
+        _out = out.with_stem(f"{out.stem}${i:02X}") if len(fonts) > 1 else out
+        with open(_out, "w", newline="\n", encoding="utf-8") as f:
+            printer = lambda *args, **kwargs: print(*args, file=f, **kwargs)
+            savefont(font, printer, fancy=fancy)
+
+
 if __name__ == "__main__":
     a = sys.argv[1:]
     options = 1
